@@ -11,19 +11,21 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import s.com.gojekassignment.BuildConfig;
+import s.com.gojekassignment.data.ApiCalls;
 import s.com.gojekassignment.di.Scope.ApplicationScope;
 
 
 @Module(includes = {Network.class})
 public class ApiModule {
 
-    /* @Provides
+    @Provides
      @ApplicationScope
      public ApiCalls apiCalls(Retrofit retrofit)
      {
          return retrofit.create(ApiCalls.class);
      }
- */
+
+
     @Provides
     @ApplicationScope
     public Retrofit retrofitClient(OkHttpClient client,Converter.Factory gsonConverterFactory,CallAdapter.Factory rxCallAdapter,@Named("baseurl") String baseUrl) {

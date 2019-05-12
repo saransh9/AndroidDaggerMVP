@@ -3,6 +3,7 @@ package s.com.gojekassignment.di.component;
 
 import dagger.Component;
 import s.com.gojekassignment.ApplicationClass;
+import s.com.gojekassignment.data.ApiCalls;
 import s.com.gojekassignment.di.Scope.ApplicationScope;
 import s.com.gojekassignment.di.module.ApiModule;
 
@@ -13,5 +14,5 @@ public interface ApplicationComponent {
 
     void inject(ApplicationClass applicationClass);
 
-    //ApiCalls getapiCalls();
+    ApiCalls getapiCalls();
 }
