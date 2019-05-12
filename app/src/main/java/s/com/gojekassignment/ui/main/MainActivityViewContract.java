@@ -12,4 +12,6 @@ public interface MainActivityViewContract extends BaseViewContract {
     void dismissLoader();
 
     void setApiResponse(ArrayList<GithubModel> githubModelArrayList);
+
+    void setApiError(Throwable e);
 }

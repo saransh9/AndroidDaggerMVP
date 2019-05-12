@@ -28,12 +28,15 @@ public class MainActivityPresenter<V extends MainActivityViewContract> extends B
     }
 
     @Override
-    public void fetchData() {
+    public void fetchData(boolean showLoader) {
         if (!isViewAttached()) {
             return;
         }
-
-        getView().showLoader();
+        if (showLoader) {
+            getView().showLoader();
+        } else {
+            getView().dismissLoader();
+        }
         getCompositeDisposable().add(apiCalls.fetchRepo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -52,6 +55,7 @@ public class MainActivityPresenter<V extends MainActivityViewContract> extends B
                     public void onError(Throwable e) {
                         if (isViewAttached()) {
                             getView().dismissLoader();
+                            getView().setApiError(e);
 
                         }
                     }

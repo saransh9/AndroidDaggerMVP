@@ -17,6 +17,7 @@ import s.com.gojekassignment.databinding.ItemListBinding;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
+    int currentExpanded = -1;
     private ArrayList<GithubModel> mGithubModelArrayList;
     private Context mContext;
 
@@ -46,8 +47,23 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 .into(holder.binding.civProfile);
 
         holder.binding.clParent.setOnClickListener(v -> {
+            if (currentExpanded != -1 && currentExpanded != position) {
+                mGithubModelArrayList.get(currentExpanded).setChildVisible(!mGithubModelArrayList.get(currentExpanded).isChildVisible());
+                notifyItemChanged(currentExpanded);
+                mGithubModelArrayList.get(currentExpanded + 1).setShadowVisible(!mGithubModelArrayList.get(currentExpanded + 1).isShadowVisible());
+                notifyItemChanged(currentExpanded + 1);
+            }
+            if (currentExpanded == position) {
+                currentExpanded = -1;
+            } else {
+                currentExpanded = position;
+            }
             mGithubModelArrayList.get(position).setChildVisible(!mGithubModelArrayList.get(position).isChildVisible());
             notifyItemChanged(position);
+            mGithubModelArrayList.get(position + 1).setShadowVisible(!mGithubModelArrayList.get(position + 1).isShadowVisible());
+            notifyItemChanged(position + 1);
+
+
         });
     }
 

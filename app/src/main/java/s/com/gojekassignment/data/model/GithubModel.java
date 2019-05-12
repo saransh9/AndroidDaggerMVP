@@ -21,7 +21,16 @@ public class GithubModel {
 
     private String currentPeriodStars;
 
-    private boolean isChildVisible = false;
+    private boolean isChildVisible;
+    private boolean isShadowVisible;
+
+    public boolean isShadowVisible() {
+        return isShadowVisible;
+    }
+
+    public void setShadowVisible(boolean shadowVisible) {
+        isShadowVisible = shadowVisible;
+    }
 
     public boolean isChildVisible() {
         return isChildVisible;

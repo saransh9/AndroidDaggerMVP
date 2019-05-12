@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
@@ -32,12 +34,20 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
 
         getActivityComponent().inject(this);
         mPresenter.onAttach(MainActivity.this);
-        mPresenter.fetchData();
+
         setSupportActionBar(binding.vToolbar.myToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         binding.vToolbar.toolbarTitle.setText(R.string.trending);
+        mPresenter.fetchData(true);
+        binding.srlSwipeRefreshList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.fetchData(false);
+            }
+        });
+
     }
 
     @Override
@@ -58,13 +68,22 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
 
     @Override
     public void setApiResponse(ArrayList<GithubModel> githubModelArrayList) {
+        binding.srlSwipeRefreshList.setRefreshing(false);
         Adapter adapter = new Adapter(this, githubModelArrayList);
         binding.rvRecycler.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         binding.rvRecycler.setLayoutManager(layoutManager);
         binding.rvRecycler.setItemAnimator(null);
-        binding.rvRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        DividerItemDecoration myDivider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        myDivider.setDrawable(ContextCompat.getDrawable(this, R.drawable.custom_divider));
+        binding.rvRecycler.addItemDecoration(myDivider);
+        // binding.rvRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+    }
+
+    @Override
+    public void setApiError(Throwable e) {
+        binding.srlSwipeRefreshList.setRefreshing(false);
     }
 
     @Override

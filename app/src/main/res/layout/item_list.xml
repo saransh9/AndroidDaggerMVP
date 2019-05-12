@@ -28,6 +28,17 @@
             tools:layout_conversion_wrapHeight="84"
             tools:layout_conversion_wrapWidth="84" />
 
+        <View
+            android:id="@+id/v_shadow_divider"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/ic_shadow_down"
+            android:visibility="@{data.shadowVisible?View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/tv_profile_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
         <TextView
             android:id="@+id/tv_profile_name"
             android:layout_width="wrap_content"
@@ -169,6 +180,7 @@
             app:layout_constraintStart_toEndOf="@+id/iv_fork"
             app:layout_constraintTop_toBottomOf="@+id/tv_repo_desc"
             app:layout_constraintVertical_bias="0.0" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
