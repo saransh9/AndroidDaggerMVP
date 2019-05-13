@@ -3,11 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/overflow_menu"
+        android:icon="@drawable/overflow_black_24"
+        android:orderInCategory="100"
+        android:title="More Options"
+        app:actionLayout="@layout/custom_action"
+        app:showAsAction="always" />
+    <!--<item
         android:id="@+id/sort_by_name"
         android:title="@string/sort_by_name"
         app:showAsAction="never" />
     <item
         android:id="@+id/sort_by_stars"
         android:title="@string/sort_by_stars"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
 </menu>

@@ -1,9 +1,15 @@
 package s.com.gojekassignment.ui.main;
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
 
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
@@ -20,6 +26,7 @@ import javax.inject.Inject;
 import s.com.gojekassignment.R;
 import s.com.gojekassignment.data.model.GithubModel;
 import s.com.gojekassignment.databinding.ActivityMainBinding;
+import s.com.gojekassignment.databinding.LayoutPopUpMenuBinding;
 import s.com.gojekassignment.ui.base.BaseActivity;
 
 public class MainActivity extends BaseActivity implements MainActivityViewContract {
@@ -108,32 +115,47 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-
+        ImageView imageView = menu.findItem(R.id.overflow_menu).getActionView().findViewById(R.id.iv_overflow);
+        imageView.setOnClickListener(this::showPopUpMenu);
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    private void showPopUpMenu(View view) {
 
-        int id = item.getItemId();
         ArrayList<GithubModel> arrayList = null;
         if (mAdapter != null) {
             arrayList = mAdapter.getmGithubModelArrayList();
         }
-        switch (id) {
-            case R.id.sort_by_name:
-                if (arrayList != null && mAdapter != null) {
-                    Collections.sort(arrayList, new GithubModel.SortByName());
-                    mAdapter.notifyDataSetChanged();
-                }
-                break;
-            case R.id.sort_by_stars:
-                if (arrayList != null && mAdapter != null) {
-                    Collections.sort(arrayList, new GithubModel.SortByStars());
-                    mAdapter.notifyDataSetChanged();
-                }
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        LayoutPopUpMenuBinding popUpMenuBinding = LayoutPopUpMenuBinding.inflate(inflater);
+
+        PopupWindow popupWindow = new PopupWindow();
+        popupWindow.setContentView(popUpMenuBinding.getRoot());
+        popupWindow.setFocusable(true);
+        popupWindow.setWidth(400);
+        popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        ArrayList<GithubModel> finalArrayList = arrayList;
+        popUpMenuBinding.tvSortByName.setOnClickListener(v -> {
+            if (finalArrayList != null && mAdapter != null) {
+                Collections.sort(finalArrayList, new GithubModel.SortByName());
+                mAdapter.notifyDataSetChanged();
+            }
+            popupWindow.dismiss();
+        });
+
+        popUpMenuBinding.tvSortByStars.setOnClickListener(v -> {
+            if (finalArrayList != null && mAdapter != null) {
+                Collections.sort(finalArrayList, new GithubModel.SortByStars());
+                mAdapter.notifyDataSetChanged();
+            }
+            popupWindow.dismiss();
+        });
+        popupWindow.showAsDropDown(view);
+
+
     }
 }

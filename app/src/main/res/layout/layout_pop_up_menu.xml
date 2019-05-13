@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_popup"
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_sort_by_stars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/sort_by_stars"
+            android:textColor="@color/item_text_color"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_sort_by_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="sans-serif"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/sort_by_name"
+            android:textColor="@color/item_text_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+</layout>
