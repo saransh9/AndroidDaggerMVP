@@ -67,6 +67,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         });
     }
 
+    public void setmGithubModelArrayList(ArrayList<GithubModel> mGithubModelArrayList) {
+        this.mGithubModelArrayList = mGithubModelArrayList;
+    }
+
     @Override
     public int getItemCount() {
         if (mGithubModelArrayList != null) {

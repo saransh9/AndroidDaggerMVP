@@ -45,6 +45,15 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
         }
         mBinding.vToolbar.toolbarTitle.setText(R.string.trending);
         mPresenter.fetchData(true);
+        mAdapter = new Adapter(this, null);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
+        mBinding.rvRecycler.setLayoutManager(layoutManager);
+        mBinding.rvRecycler.setItemAnimator(null);
+        DividerItemDecoration myDivider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        myDivider.setDrawable(ContextCompat.getDrawable(this, R.drawable.custom_divider));
+        mBinding.rvRecycler.addItemDecoration(myDivider);
+        mBinding.rvRecycler.setAdapter(mAdapter);
         mBinding.srlSwipeRefreshList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -83,15 +92,8 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
     public void setApiResponse(ArrayList<GithubModel> githubModelArrayList) {
         mBinding.srlSwipeRefreshList.setVisibility(View.VISIBLE);
         mBinding.srlSwipeRefreshList.setRefreshing(false);
-        mAdapter = new Adapter(this, githubModelArrayList);
-        mBinding.rvRecycler.setAdapter(mAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(RecyclerView.VERTICAL);
-        mBinding.rvRecycler.setLayoutManager(layoutManager);
-        mBinding.rvRecycler.setItemAnimator(null);
-        DividerItemDecoration myDivider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        myDivider.setDrawable(ContextCompat.getDrawable(this, R.drawable.custom_divider));
-        mBinding.rvRecycler.addItemDecoration(myDivider);
+        mAdapter.setmGithubModelArrayList(githubModelArrayList);
+        mAdapter.notifyDataSetChanged();
         // mBinding.rvRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
 
