@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
         mBinding.vToolbar.toolbarTitle.setText(R.string.trending);
-        mPresenter.fetchData(true);
+        mPresenter.fetchData(true, false);
         mAdapter = new Adapter(this, null);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
         mBinding.srlSwipeRefreshList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.fetchData(false);
+                mPresenter.fetchData(false, true);
             }
         });
 
@@ -77,7 +77,7 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
     }
 
     public void onClickRetryButton(View view) {
-        mPresenter.fetchData(true);
+        mPresenter.fetchData(true, true);
     }
 
     @Override

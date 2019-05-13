@@ -49,9 +49,9 @@ public class PresenterTest {
     @Test
     public void dataFetchTestError() {
 
-        when(apiCalls.fetchRepo()).thenReturn(Single.error(e));
+        when(apiCalls.fetchRepo(false)).thenReturn(Single.error(e));
 
-        presenter.fetchData(true);
+        presenter.fetchData(true, false);
         verify(activity).showLoader();
         verify(activity).setApiError(e);
 
@@ -61,9 +61,9 @@ public class PresenterTest {
     public void dataFetchTestSuccess() {
 
         ArrayList<GithubModel> arrayList = new ArrayList<>();
-        when(apiCalls.fetchRepo()).thenReturn(Single.just(arrayList));
+        when(apiCalls.fetchRepo(false)).thenReturn(Single.just(arrayList));
 
-        presenter.fetchData(true);
+        presenter.fetchData(true, false);
         verify(activity).showLoader();
         verify(activity).dismissLoader();
         verify(activity).setApiResponse(arrayList);

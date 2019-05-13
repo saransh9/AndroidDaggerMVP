@@ -30,7 +30,7 @@ public class MainActivityPresenter<V extends MainActivityViewContract> extends B
     }
 
     @Override
-    public void fetchData(boolean showLoader) {
+    public void fetchData(boolean showLoader, boolean forceRefresh) {
         if (!isViewAttached()) {
             return;
         }
@@ -41,7 +41,7 @@ public class MainActivityPresenter<V extends MainActivityViewContract> extends B
         }
         getView().hideInternetError();
 
-        getCompositeDisposable().add(mApiCalls.fetchRepo()
+        getCompositeDisposable().add(mApiCalls.fetchRepo(forceRefresh)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(disposable -> {
                     EspressoIdlingResource.getInstance().increment();

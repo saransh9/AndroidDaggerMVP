@@ -12,6 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -36,6 +37,7 @@ public class Network {
         return httpLoggingInterceptor;
 
     }
+
     @Provides
     @ApplicationScope
     public OkHttpClient okHttpClient(@ApplicationContext Context context, HttpLoggingInterceptor loggerInterceptor) {
@@ -43,13 +45,21 @@ public class Network {
                 .cache(new Cache(new File(context.getCacheDir(), "responses"), (5 * 1024 * 1024)))
                 .addInterceptor(chain -> {
                     Request request = chain.request();
-                    if (!isNetworkAvailable(context)) {
-                        request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 2 * 60 * 60).build();
-                        return chain.proceed(request);
+                    Boolean value = Boolean.valueOf(request.headers().get("forcepull"));
+                    request = request.newBuilder().removeHeader("forcepull").build();
+                    if (!value) {
+                        if (!isNetworkAvailable(context)) {
+                            request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 2 * 60 * 60).build();
+                            return chain.proceed(request);
+                        } else {
+                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build();
+                            return chain.proceed(request);
+                        }
                     } else {
-                        request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build();
+                        request = request.newBuilder().cacheControl(CacheControl.FORCE_NETWORK).build();
                         return chain.proceed(request);
                     }
+
 
                 });
 
