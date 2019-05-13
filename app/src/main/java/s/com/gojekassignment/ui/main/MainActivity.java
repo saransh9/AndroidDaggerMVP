@@ -1,6 +1,7 @@
 package s.com.gojekassignment.ui.main;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -68,6 +69,11 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
             }
         });
 
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     public void onClickRetryButton(View view) {

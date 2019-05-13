@@ -137,6 +137,7 @@ public class MainActivityTest {
                 .perform(click());
 
         onView(withId(R.id.tv_sort_by_name)).perform(click());
+        onView(withId(R.id.rv_recycler)).check(matches((new RecyclerViewMatcher(R.id.rv_recycler)).isSortedByName()));
     }
 
     @Test
@@ -145,6 +146,7 @@ public class MainActivityTest {
                 .perform(click());
 
         onView(withId(R.id.tv_sort_by_stars)).perform(click());
+        onView(withId(R.id.rv_recycler)).check(matches(new RecyclerViewMatcher(R.id.rv_recycler).isSortedByStars()));
     }
 
     @After

@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.io.IOException;
+import java.util.ArrayList;
 
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
@@ -15,6 +15,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 import s.com.gojekassignment.data.ApiCalls;
+import s.com.gojekassignment.data.model.GithubModel;
 import s.com.gojekassignment.ui.main.MainActivity;
 import s.com.gojekassignment.ui.main.MainActivityPresenter;
 import s.com.gojekassignment.ui.main.MainActivityPresenterContract;
@@ -48,11 +49,24 @@ public class PresenterTest {
     @Test
     public void dataFetchTestError() {
 
-        when(apiCalls.fetchRepo()).thenReturn(Single.error(new IOException()));
+        when(apiCalls.fetchRepo()).thenReturn(Single.error(e));
 
         presenter.fetchData(true);
         verify(activity).showLoader();
-        // verify(activity).setApiError(e);
+        verify(activity).setApiError(e);
+
+    }
+
+    @Test
+    public void dataFetchTestSuccess() {
+
+        ArrayList<GithubModel> arrayList = new ArrayList<>();
+        when(apiCalls.fetchRepo()).thenReturn(Single.just(arrayList));
+
+        presenter.fetchData(true);
+        verify(activity).showLoader();
+        verify(activity).dismissLoader();
+        verify(activity).setApiResponse(arrayList);
 
     }
 

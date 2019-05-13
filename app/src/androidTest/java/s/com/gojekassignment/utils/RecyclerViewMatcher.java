@@ -5,9 +5,17 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.collect.Ordering;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import s.com.gojekassignment.data.model.GithubModel;
+import s.com.gojekassignment.ui.main.Adapter;
 
 public class RecyclerViewMatcher {
     private final int recyclerViewId;
@@ -62,6 +70,64 @@ public class RecyclerViewMatcher {
                     return view == targetView;
                 }
 
+            }
+        };
+    }
+
+    public Matcher<View> isSortedByName() {
+        return new TypeSafeMatcher<View>() {
+
+            private final List<String> gitRepoNames = new ArrayList<>();
+
+            @Override
+            protected boolean matchesSafely(View item) {
+                RecyclerView recyclerView = (RecyclerView) item;
+                Adapter rvAdapter = (Adapter) recyclerView.getAdapter();
+                gitRepoNames.clear();
+                gitRepoNames.addAll(extractTeamNames(rvAdapter.getmGithubModelArrayList()));
+                return Ordering.natural().isOrdered(gitRepoNames);
+            }
+
+            private List<String> extractTeamNames(List<GithubModel> githubModels) {
+                List<String> gitRepoNames = new ArrayList<>();
+                for (GithubModel model : githubModels) {
+                    gitRepoNames.add(model.getName().toLowerCase());
+                }
+                return gitRepoNames;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("has items sorted names: " + gitRepoNames);
+            }
+        };
+    }
+
+    public Matcher<View> isSortedByStars() {
+        return new TypeSafeMatcher<View>() {
+
+            private final List<Integer> gitRepoNames = new ArrayList<>();
+
+            @Override
+            protected boolean matchesSafely(View item) {
+                RecyclerView recyclerView = (RecyclerView) item;
+                Adapter rvAdapter = (Adapter) recyclerView.getAdapter();
+                gitRepoNames.clear();
+                gitRepoNames.addAll(extractTeamNames(rvAdapter.getmGithubModelArrayList()));
+                return Ordering.natural().isOrdered(gitRepoNames);
+            }
+
+            private List<Integer> extractTeamNames(List<GithubModel> githubModels) {
+                List<Integer> gitRepoNames = new ArrayList<>();
+                for (GithubModel model : githubModels) {
+                    gitRepoNames.add(Integer.valueOf(model.getStars()));
+                }
+                return gitRepoNames;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("has items sorted by stars: " + gitRepoNames);
             }
         };
     }
