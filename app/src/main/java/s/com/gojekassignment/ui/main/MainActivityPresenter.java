@@ -13,17 +13,19 @@ import io.reactivex.schedulers.Schedulers;
 import s.com.gojekassignment.data.ApiCalls;
 import s.com.gojekassignment.data.model.GithubModel;
 import s.com.gojekassignment.ui.base.BasePresenter;
+import s.com.gojekassignment.utils.EspressoIdlingResource;
 
 public class MainActivityPresenter<V extends MainActivityViewContract> extends BasePresenter<V> implements MainActivityPresenterContract<V> {
 
     private static final String TAG = "MainActivityPresenter";
-    @Inject
+
     ApiCalls mApiCalls;
     private MainActivityViewContract mViewContract;
 
     @Inject
-    public MainActivityPresenter(CompositeDisposable compositeDisposable) {
+    public MainActivityPresenter(ApiCalls apiCalls, CompositeDisposable compositeDisposable) {
         super(compositeDisposable);
+        this.mApiCalls = apiCalls;
 
     }
 
@@ -41,7 +43,13 @@ public class MainActivityPresenter<V extends MainActivityViewContract> extends B
 
         getCompositeDisposable().add(mApiCalls.fetchRepo()
                 .subscribeOn(Schedulers.io())
+                .doOnSubscribe(disposable -> {
+                    EspressoIdlingResource.getInstance().increment();
+                })
                 .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(() -> {
+                    EspressoIdlingResource.getInstance().decrement();
+                })
                 .subscribeWith(new DisposableSingleObserver<ArrayList<GithubModel>>() {
                     @Override
                     public void onSuccess(ArrayList<GithubModel> githubModel) {
