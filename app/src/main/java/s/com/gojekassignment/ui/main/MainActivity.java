@@ -25,29 +25,34 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
     @Inject
     MainActivityPresenterContract<MainActivityViewContract> mPresenter;
 
-    ActivityMainBinding binding;
+    ActivityMainBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding.setView(this);
+        mBinding.lInternetNotFound.setView(this);
         getActivityComponent().inject(this);
         mPresenter.onAttach(MainActivity.this);
 
-        setSupportActionBar(binding.vToolbar.myToolbar);
+        setSupportActionBar(mBinding.vToolbar.myToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        binding.vToolbar.toolbarTitle.setText(R.string.trending);
+        mBinding.vToolbar.toolbarTitle.setText(R.string.trending);
         mPresenter.fetchData(true);
-        binding.srlSwipeRefreshList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mBinding.srlSwipeRefreshList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mPresenter.fetchData(false);
             }
         });
 
+    }
+
+    public void onClickRetryButton(View view) {
+        mPresenter.fetchData(true);
     }
 
     @Override
@@ -58,32 +63,41 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
 
     @Override
     public void showLoader() {
-        binding.progressCircular.setVisibility(View.VISIBLE);
+        mBinding.progressCircular.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void dismissLoader() {
-        binding.progressCircular.setVisibility(View.GONE);
+        mBinding.progressCircular.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideInternetError() {
+        mBinding.srlSwipeRefreshList.setVisibility(View.VISIBLE);
+        mBinding.lInternetNotFound.clParentNoInternet.setVisibility(View.GONE);
     }
 
     @Override
     public void setApiResponse(ArrayList<GithubModel> githubModelArrayList) {
-        binding.srlSwipeRefreshList.setRefreshing(false);
+        mBinding.srlSwipeRefreshList.setRefreshing(false);
         Adapter adapter = new Adapter(this, githubModelArrayList);
-        binding.rvRecycler.setAdapter(adapter);
+        mBinding.rvRecycler.setAdapter(adapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        binding.rvRecycler.setLayoutManager(layoutManager);
-        binding.rvRecycler.setItemAnimator(null);
+        mBinding.rvRecycler.setLayoutManager(layoutManager);
+        mBinding.rvRecycler.setItemAnimator(null);
         DividerItemDecoration myDivider = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         myDivider.setDrawable(ContextCompat.getDrawable(this, R.drawable.custom_divider));
-        binding.rvRecycler.addItemDecoration(myDivider);
-        // binding.rvRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        mBinding.rvRecycler.addItemDecoration(myDivider);
+        // mBinding.rvRecycler.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
     }
 
     @Override
     public void setApiError(Throwable e) {
-        binding.srlSwipeRefreshList.setRefreshing(false);
+        mBinding.srlSwipeRefreshList.setRefreshing(false);
+        dismissLoader();
+        mBinding.srlSwipeRefreshList.setVisibility(View.GONE);
+        mBinding.lInternetNotFound.clParentNoInternet.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -8,4 +8,8 @@
     <color name="toolbar_title">#25282B</color>
     <color name="divider_colour">#e8e8e8</color>
     <color name="item_text_color">#52575C</color>
+    <color name="error_title_color">#4A4A4A</color>
+    <color name="error_dec_color">#929292</color>
+    <color name="error_button_color">#31B057</color>
+
 </resources>

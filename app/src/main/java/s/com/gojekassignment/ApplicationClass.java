@@ -5,8 +5,9 @@ import android.app.Application;
 import androidx.appcompat.app.AppCompatActivity;
 
 import s.com.gojekassignment.di.component.ApplicationComponent;
-import s.com.gojekassignment.di.module.ApiModule;
 import s.com.gojekassignment.di.component.DaggerApplicationComponent;
+import s.com.gojekassignment.di.module.ApiModule;
+import s.com.gojekassignment.di.module.ApplicationModule;
 
 
 public class ApplicationClass extends Application {
@@ -22,6 +23,7 @@ public class ApplicationClass extends Application {
         super.onCreate();
         applicationComponent = DaggerApplicationComponent.builder()
                 .apiModule(new ApiModule())
+                .applicationModule(new ApplicationModule(this))
                 .build();
         applicationComponent.inject(this);
     }

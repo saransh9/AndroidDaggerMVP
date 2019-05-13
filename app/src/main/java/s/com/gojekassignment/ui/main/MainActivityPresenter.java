@@ -18,7 +18,7 @@ public class MainActivityPresenter<V extends MainActivityViewContract> extends B
 
     private static final String TAG = "MainActivityPresenter";
     @Inject
-    ApiCalls apiCalls;
+    ApiCalls mApiCalls;
     private MainActivityViewContract mViewContract;
 
     @Inject
@@ -37,7 +37,9 @@ public class MainActivityPresenter<V extends MainActivityViewContract> extends B
         } else {
             getView().dismissLoader();
         }
-        getCompositeDisposable().add(apiCalls.fetchRepo()
+        getView().hideInternetError();
+
+        getCompositeDisposable().add(mApiCalls.fetchRepo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableSingleObserver<ArrayList<GithubModel>>() {
@@ -54,7 +56,6 @@ public class MainActivityPresenter<V extends MainActivityViewContract> extends B
                     @Override
                     public void onError(Throwable e) {
                         if (isViewAttached()) {
-                            getView().dismissLoader();
                             getView().setApiError(e);
 
                         }

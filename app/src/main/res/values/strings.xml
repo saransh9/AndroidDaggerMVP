@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">GoJekAssignment</string>
-    <string name="some_error">Something went wrong!!</string>
+    <string name="some_error">Something went wrong..</string>
     <string name="trending">Trending</string>
+    <string name="desc_error_screen">An alien is probably blocking your signal</string>
+    <string name="retry">RETRY</string>
 </resources>
