@@ -76,8 +76,12 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         }
     }
 
+    public ArrayList<GithubModel> getmGithubModelArrayList() {
+        return this.mGithubModelArrayList;
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+
+    class ViewHolder extends RecyclerView.ViewHolder {
 
 
         private final ItemListBinding binding;

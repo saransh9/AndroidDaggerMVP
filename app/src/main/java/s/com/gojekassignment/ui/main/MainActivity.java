@@ -2,6 +2,7 @@ package s.com.gojekassignment.ui.main;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.core.content.ContextCompat;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.inject.Inject;
 
@@ -26,6 +28,7 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
     MainActivityPresenterContract<MainActivityViewContract> mPresenter;
 
     ActivityMainBinding mBinding;
+    Adapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +76,15 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
 
     @Override
     public void hideInternetError() {
-        mBinding.srlSwipeRefreshList.setVisibility(View.VISIBLE);
         mBinding.lInternetNotFound.clParentNoInternet.setVisibility(View.GONE);
     }
 
     @Override
     public void setApiResponse(ArrayList<GithubModel> githubModelArrayList) {
+        mBinding.srlSwipeRefreshList.setVisibility(View.VISIBLE);
         mBinding.srlSwipeRefreshList.setRefreshing(false);
-        Adapter adapter = new Adapter(this, githubModelArrayList);
-        mBinding.rvRecycler.setAdapter(adapter);
+        mAdapter = new Adapter(this, githubModelArrayList);
+        mBinding.rvRecycler.setAdapter(mAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         mBinding.rvRecycler.setLayoutManager(layoutManager);
@@ -105,5 +108,30 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
         getMenuInflater().inflate(R.menu.menu, menu);
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+        ArrayList<GithubModel> arrayList = null;
+        if (mAdapter != null) {
+            arrayList = mAdapter.getmGithubModelArrayList();
+        }
+        switch (id) {
+            case R.id.sort_by_name:
+                if (arrayList != null && mAdapter != null) {
+                    Collections.sort(arrayList, new GithubModel.SortByName());
+                    mAdapter.notifyDataSetChanged();
+                }
+                break;
+            case R.id.sort_by_stars:
+                if (arrayList != null && mAdapter != null) {
+                    Collections.sort(arrayList, new GithubModel.SortByStars());
+                    mAdapter.notifyDataSetChanged();
+                }
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

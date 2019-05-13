@@ -1,5 +1,7 @@
 package s.com.gojekassignment.data.model;
 
+import java.util.Comparator;
+
 public class GithubModel {
     private String forks;
 
@@ -120,8 +122,25 @@ public class GithubModel {
         this.currentPeriodStars = currentPeriodStars;
     }
 
-    @Override
-    public String toString() {
-        return "ClassPojo [forks = " + forks + ", builtBy = " + builtBy + ", author = " + author + ", name = " + name + ", description = " + description + ", language = " + language + ", languageColor = " + languageColor + ", stars = " + stars + ", url = " + url + ", currentPeriodStars = " + currentPeriodStars + "]";
+
+    public static class SortByStars implements Comparator<GithubModel> {
+
+        @Override
+        public int compare(GithubModel o1, GithubModel o2) {
+            try {
+                return Integer.valueOf(o1.getStars()).compareTo(Integer.valueOf(o2.getStars()));
+            } catch (NumberFormatException e) {
+                return 0;
+            }
+
+        }
+    }
+
+    public static class SortByName implements Comparator<GithubModel> {
+
+        @Override
+        public int compare(GithubModel o1, GithubModel o2) {
+            return o1.getName().toLowerCase().compareTo(o2.getName().toLowerCase());
+        }
     }
 }
