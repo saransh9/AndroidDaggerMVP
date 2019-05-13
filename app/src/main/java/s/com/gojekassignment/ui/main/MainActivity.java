@@ -148,6 +148,7 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
         popUpMenuBinding.tvSortByName.setOnClickListener(v -> {
             if (finalArrayList != null && mAdapter != null) {
                 Collections.sort(finalArrayList, new GithubModel.SortByName());
+                mAdapter.setmGithubModelArrayList(finalArrayList);
                 mAdapter.notifyDataSetChanged();
             }
             popupWindow.dismiss();
@@ -156,6 +157,7 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
         popUpMenuBinding.tvSortByStars.setOnClickListener(v -> {
             if (finalArrayList != null && mAdapter != null) {
                 Collections.sort(finalArrayList, new GithubModel.SortByStars());
+                mAdapter.setmGithubModelArrayList(finalArrayList);
                 mAdapter.notifyDataSetChanged();
             }
             popupWindow.dismiss();

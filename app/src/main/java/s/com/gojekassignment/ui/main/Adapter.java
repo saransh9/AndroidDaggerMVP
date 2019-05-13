@@ -50,8 +50,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             if (currentExpanded != -1 && currentExpanded != position) {
                 mGithubModelArrayList.get(currentExpanded).setChildVisible(!mGithubModelArrayList.get(currentExpanded).isChildVisible());
                 notifyItemChanged(currentExpanded);
-                mGithubModelArrayList.get(currentExpanded + 1).setShadowVisible(!mGithubModelArrayList.get(currentExpanded + 1).isShadowVisible());
-                notifyItemChanged(currentExpanded + 1);
+                if (mGithubModelArrayList.size() > position + 1) {
+                    mGithubModelArrayList.get(currentExpanded + 1).setShadowVisible(!mGithubModelArrayList.get(currentExpanded + 1).isShadowVisible());
+                    notifyItemChanged(currentExpanded + 1);
+                }
             }
             if (currentExpanded == position) {
                 currentExpanded = -1;
@@ -60,15 +62,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             }
             mGithubModelArrayList.get(position).setChildVisible(!mGithubModelArrayList.get(position).isChildVisible());
             notifyItemChanged(position);
-            mGithubModelArrayList.get(position + 1).setShadowVisible(!mGithubModelArrayList.get(position + 1).isShadowVisible());
-            notifyItemChanged(position + 1);
+            if (mGithubModelArrayList.size() > position + 1) {
+                mGithubModelArrayList.get(position + 1).setShadowVisible(!mGithubModelArrayList.get(position + 1).isShadowVisible());
+                notifyItemChanged(position + 1);
+            }
 
 
         });
-    }
-
-    public void setmGithubModelArrayList(ArrayList<GithubModel> mGithubModelArrayList) {
-        this.mGithubModelArrayList = mGithubModelArrayList;
     }
 
     @Override
@@ -84,6 +84,23 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return this.mGithubModelArrayList;
     }
 
+    public void setmGithubModelArrayList(ArrayList<GithubModel> mGithubModelArrayList) {
+        currentExpanded = -1;
+        for (int temp = 0; temp < mGithubModelArrayList.size(); temp++) {
+            if (mGithubModelArrayList.get(temp).isShadowVisible()) {
+                mGithubModelArrayList.get(temp).setShadowVisible(false);
+            }
+        }
+        for (int temp = 0; temp < mGithubModelArrayList.size(); temp++) {
+            if (mGithubModelArrayList.get(temp).isChildVisible()) {
+                currentExpanded = temp;
+                if (mGithubModelArrayList.size() > temp + 1) {
+                    mGithubModelArrayList.get(temp + 1).setShadowVisible(true);
+                }
+            }
+        }
+        this.mGithubModelArrayList = new ArrayList<>(mGithubModelArrayList);
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
 
