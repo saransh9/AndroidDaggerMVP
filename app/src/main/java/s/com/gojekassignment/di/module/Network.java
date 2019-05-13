@@ -44,7 +44,7 @@ public class Network {
                 .addInterceptor(chain -> {
                     Request request = chain.request();
                     if (!isNetworkAvailable(context)) {
-                        request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 5).build();
+                        request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 2 * 60 * 60).build();
                         return chain.proceed(request);
                     } else {
                         request.newBuilder().header("Cache-Control", "public, max-age=" + 5).build();
