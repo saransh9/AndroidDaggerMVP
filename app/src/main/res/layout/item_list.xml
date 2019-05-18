@@ -11,7 +11,7 @@
 
         <variable
             name="data"
-            type="s.com.gojekassignment.data.model.GithubModel" />
+            type="s.com.mvpdagger.data.model.GithubModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

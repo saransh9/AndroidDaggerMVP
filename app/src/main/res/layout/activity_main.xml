@@ -7,7 +7,7 @@
 
         <variable
             name="view"
-            type="s.com.gojekassignment.ui.main.MainActivity" />
+            type="s.com.mvpdagger.ui.main.MainActivity" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
