@@ -21,7 +21,7 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField 'String', 'HOST', '"https://github-trending-api.now.sh"'
+            buildConfigField 'String', 'HOST', '"https://github-trending-api.now.sh/"'
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 

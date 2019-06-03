@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
+import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -65,7 +66,7 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
         mBinding.srlSwipeRefreshList.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.fetchData(false, true);
+                mPresenter.fetchData(false, false);
             }
         });
 
@@ -116,6 +117,18 @@ public class MainActivity extends BaseActivity implements MainActivityViewContra
         dismissLoader();
         mBinding.srlSwipeRefreshList.setVisibility(View.GONE);
         mBinding.lInternetNotFound.clParentNoInternet.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setTimeText(@StringRes int text) {
+        mBinding.tvTime.setVisibility(View.VISIBLE);
+        mBinding.tvTime.setText(getString(text));
+
+    }
+
+    @Override
+    public void hideTimeText() {
+        mBinding.tvTime.setVisibility(View.GONE);
     }
 
     @Override

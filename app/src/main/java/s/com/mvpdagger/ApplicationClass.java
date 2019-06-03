@@ -8,6 +8,7 @@ import s.com.mvpdagger.di.component.ApplicationComponent;
 import s.com.mvpdagger.di.component.DaggerApplicationComponent;
 import s.com.mvpdagger.di.module.ApiModule;
 import s.com.mvpdagger.di.module.ApplicationModule;
+import s.com.mvpdagger.di.module.SharedPreferencesModule;
 
 
 public class ApplicationClass extends Application {
@@ -24,6 +25,7 @@ public class ApplicationClass extends Application {
         applicationComponent = DaggerApplicationComponent.builder()
                 .apiModule(new ApiModule())
                 .applicationModule(new ApplicationModule(this))
+                .sharedPreferencesModule(new SharedPreferencesModule(getApplicationContext()))
                 .build();
         applicationComponent.inject(this);
     }

@@ -6,4 +6,7 @@
     <string name="retry">RETRY</string>
     <string name="sort_by_stars">Sort by stars</string>
     <string name="sort_by_name">Sort by name</string>
+    <string name="thirty_mins">Updated 30 mins ago</string>
+    <string name="sixty_mins">Updated about 30 mins ago</string>
+    <string name="ninety_mins">Updated about 1 hr ago ago</string>
 </resources>
